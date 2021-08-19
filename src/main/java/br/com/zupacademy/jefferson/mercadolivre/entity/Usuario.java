@@ -1,8 +1,6 @@
 package br.com.zupacademy.jefferson.mercadolivre.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -13,25 +11,27 @@ import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "tb_usuario")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
     private Long id;
 
     @NotBlank
     @Email
-    @Column(unique = true)
+    @Column(name = "email_usuario", unique = true, nullable = false)
     private String email;
 
     @NotBlank
     @Length(min = 6)
+    @Column(name = "senha_usuario", nullable = false)
     private String senha;
 
     @NotNull
     @PastOrPresent
-    @Column(nullable = false)
+    @Column(name = "registro_usuario", nullable = false)
     private LocalDateTime registrado = LocalDateTime.now();
 
     public Usuario(String login, String senha) {
