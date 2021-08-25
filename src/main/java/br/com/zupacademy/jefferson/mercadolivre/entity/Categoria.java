@@ -9,9 +9,11 @@ public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_categoria")
     private Long id;
 
     @NotBlank
+    @Column(name = "nome_categoria", nullable = false)
     private String nomeCategoria;
 
     @ManyToOne

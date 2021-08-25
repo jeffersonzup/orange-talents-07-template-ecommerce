@@ -3,7 +3,6 @@ package br.com.zupacademy.jefferson.mercadolivre.controller.data.request;
 import br.com.zupacademy.jefferson.mercadolivre.entity.Categoria;
 import br.com.zupacademy.jefferson.mercadolivre.repository.CategoriaRepository;
 import br.com.zupacademy.jefferson.mercadolivre.validation.UniqueValue;
-import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotBlank;
 

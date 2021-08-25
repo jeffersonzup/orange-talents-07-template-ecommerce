@@ -26,7 +26,7 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity<?> cadastrarUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest){
         Usuario convertedUser = usuarioRequest.converterRequestToEntity();
-        usuarioRepository.save(convertedUser);
-        return ResponseEntity.ok().body(convertedUser);
+        Usuario save = usuarioRepository.save(convertedUser);
+        return ResponseEntity.ok().body(save);
     }
 }
