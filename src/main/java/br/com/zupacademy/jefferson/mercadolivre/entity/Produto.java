@@ -6,10 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -34,10 +31,6 @@ public class Produto {
     @Column(name = "quantidade_produto")
     private int quantidade;
 
-    @Size(min = 3)
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
-    private Set<CaracteristicaProduto> caracteristicas = new HashSet<>();
-
     @NotBlank
     @Size(max = 1000)
     @Column(name = "descricao_produto")
@@ -54,6 +47,17 @@ public class Produto {
     @NotNull
     @Column(name = "instante_cadastro_produto")
     private LocalDateTime instanteCadastro = LocalDateTime.now();
+
+    @Size(min = 3)
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
+    private Set<CaracteristicaProduto> caracteristicas = new HashSet<>();
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<ImagensProduto> imagens = new HashSet<>();
+
+    @Deprecated
+    public Produto() {
+    }
 
     public Produto(String nome, BigDecimal valor, int quantidade, String descricao, Categoria categoria, Usuario usuario, Set<CaracteristicaRequest> caracteristicas) {
         this.nome = nome;
@@ -97,6 +101,10 @@ public class Produto {
         return instanteCadastro;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
     @Override
     public String toString() {
         return "Produto{" +
@@ -109,6 +117,7 @@ public class Produto {
                 ", categoria=" + categoria +
                 ", usuario=" + usuario +
                 ", instanteCadastro=" + instanteCadastro +
+                ", imagens=" + imagens +
                 '}';
     }
 
@@ -123,5 +132,14 @@ public class Produto {
     @Override
     public int hashCode() {
         return Objects.hash(id, nome, valor, quantidade, caracteristicas, descricao, categoria, usuario, instanteCadastro);
+    }
+
+    public void associateImages(Set<String> links) {
+        Set<ImagensProduto> imagensProduto =
+                links
+                .stream()
+                .map(link -> new ImagensProduto(this, link))
+                .collect(Collectors.toSet());
+        this.imagens.addAll(imagensProduto);
     }
 }
