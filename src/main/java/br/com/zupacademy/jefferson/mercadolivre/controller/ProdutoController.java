@@ -1,10 +1,13 @@
 package br.com.zupacademy.jefferson.mercadolivre.controller;
 
 import br.com.zupacademy.jefferson.mercadolivre.controller.data.request.ImagensRequest;
+import br.com.zupacademy.jefferson.mercadolivre.controller.data.request.OpiniaoRequest;
 import br.com.zupacademy.jefferson.mercadolivre.controller.data.request.ProdutoRequest;
+import br.com.zupacademy.jefferson.mercadolivre.entity.Opiniao;
 import br.com.zupacademy.jefferson.mercadolivre.entity.Produto;
 import br.com.zupacademy.jefferson.mercadolivre.entity.Usuario;
 import br.com.zupacademy.jefferson.mercadolivre.repository.CategoriaRepository;
+import br.com.zupacademy.jefferson.mercadolivre.repository.OpiniaoRepository;
 import br.com.zupacademy.jefferson.mercadolivre.repository.ProdutoRepository;
 import br.com.zupacademy.jefferson.mercadolivre.service.FakeUploader;
 import org.springframework.http.HttpStatus;
@@ -25,11 +28,14 @@ public class ProdutoController {
 
     private CategoriaRepository categoriaRepository;
 
+    private OpiniaoRepository opiniaoRepository;
+
     private FakeUploader fakeUploader;
 
-    public ProdutoController(ProdutoRepository produtoRepository, CategoriaRepository categoriaRepository, FakeUploader fakeUploader) {
+    public ProdutoController(ProdutoRepository produtoRepository, CategoriaRepository categoriaRepository, OpiniaoRepository opiniaoRepository, FakeUploader fakeUploader) {
         this.produtoRepository = produtoRepository;
         this.categoriaRepository = categoriaRepository;
+        this.opiniaoRepository = opiniaoRepository;
         this.fakeUploader = fakeUploader;
     }
 
@@ -58,6 +64,26 @@ public class ProdutoController {
         Produto produtoSalvo = produtoRepository.save(produto);
 
         return ResponseEntity.ok().body(produtoSalvo.toString());
+    }
+
+    @PostMapping("/{id}/opinioes")
+    @Transactional
+    public ResponseEntity<?> adicionaOpiniao(@PathVariable("id") Long idProduto, @RequestBody @Valid OpiniaoRequest opiniaoRequest, @AuthenticationPrincipal Usuario usuarioLogado){
+        Optional<Produto> existsProduto = produtoRepository.findById(idProduto);
+        if(existsProduto.isEmpty()){
+            return ResponseEntity.badRequest().body("Não foi possível encontrar produto!");
+        }
+
+        if(!existsProduto.get().getUsuario().equals(usuarioLogado)){
+            return ResponseEntity.badRequest().body("Produto não pertence ao usuário!");
+        }
+
+        Produto produto = existsProduto.get();
+        Opiniao opiniao = opiniaoRequest.convertRequestToEntity(produto, usuarioLogado);
+        opiniaoRepository.save(opiniao);
+        produto.addOpinoes(opiniao);
+
+        return ResponseEntity.ok().body("Opinião cadastrada com sucesso!");
     }
 
 }

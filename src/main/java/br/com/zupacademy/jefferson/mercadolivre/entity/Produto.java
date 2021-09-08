@@ -55,6 +55,9 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
     private Set<ImagensProduto> imagens = new HashSet<>();
 
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private List<Opiniao> opinioes = new ArrayList<>();
+
     @Deprecated
     public Produto() {
     }
@@ -141,5 +144,9 @@ public class Produto {
                 .map(link -> new ImagensProduto(this, link))
                 .collect(Collectors.toSet());
         this.imagens.addAll(imagensProduto);
+    }
+
+    public void addOpinoes(Opiniao opiniao){
+        this.opinioes.add(opiniao);
     }
 }
