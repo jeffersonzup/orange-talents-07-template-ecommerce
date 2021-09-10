@@ -47,6 +47,18 @@ public class Opiniao {
         this.produto = produto;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public int getNota() {
+        return nota;
+    }
+
     @Override
     public String toString() {
         return "Opiniao{" +
@@ -58,4 +70,5 @@ public class Opiniao {
                 ", produto=" + produto +
                 '}';
     }
+
 }

@@ -56,7 +56,11 @@ public class Produto {
     private Set<ImagensProduto> imagens = new HashSet<>();
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
-    private List<Opiniao> opinioes = new ArrayList<>();
+    private Set<Opiniao> opinioes = new HashSet<>();
+
+    @OneToMany(mappedBy = "produto")
+    @OrderBy("titulo asc")
+    private SortedSet<Pergunta> perguntas = new TreeSet<>();
 
     @Deprecated
     public Produto() {
@@ -106,6 +110,18 @@ public class Produto {
 
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    public Set<ImagensProduto> getImagens() {
+        return imagens;
+    }
+
+    public Set<Pergunta> getPerguntas() {
+        return perguntas;
+    }
+
+    public Set<Opiniao> getOpinioes() {
+        return opinioes;
     }
 
     @Override
