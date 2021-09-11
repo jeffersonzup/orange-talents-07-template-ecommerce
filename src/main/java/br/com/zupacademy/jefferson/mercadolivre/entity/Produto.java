@@ -165,4 +165,12 @@ public class Produto {
     public void addOpinoes(Opiniao opiniao){
         this.opinioes.add(opiniao);
     }
+
+    public boolean baixaEstoque(Integer quantidade) {
+        if(this.quantidade >= quantidade){
+            this.quantidade -= quantidade;
+            return true;
+        }
+        return false;
+    }
 }
