@@ -1,6 +1,7 @@
 package br.com.zupacademy.jefferson.mercadolivre.entity;
 
 import br.com.zupacademy.jefferson.mercadolivre.controller.data.request.CaracteristicaRequest;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -167,6 +168,8 @@ public class Produto {
     }
 
     public boolean baixaEstoque(Integer quantidade) {
+        Assert.isTrue(quantidade > 0, "Estoque insuficiente! Quantidade em estoque = " + this.quantidade);
+
         if(this.quantidade >= quantidade){
             this.quantidade -= quantidade;
             return true;

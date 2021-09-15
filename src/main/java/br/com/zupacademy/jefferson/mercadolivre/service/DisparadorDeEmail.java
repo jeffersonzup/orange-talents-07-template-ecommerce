@@ -6,6 +6,7 @@ import br.com.zupacademy.jefferson.mercadolivre.entity.Produto;
 import br.com.zupacademy.jefferson.mercadolivre.entity.Usuario;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class DisparadorDeEmail {
 
@@ -21,4 +22,15 @@ public class DisparadorDeEmail {
         System.out.println("Você recebeu uma solicitação de Compra do usuário: " + compra.getUsuario().getEmail());
         System.out.println("Referente ao produto " + compra.getProduto().getNome() + " no valor de R$ " + compra.getProduto().getValor());
     }
+
+    public void enviarEmailCompraSucesso(Compra compra){
+        System.out.println("=================================================================");
+        System.out.println("O pagamento da compra " +compra.getId()+ " foi aprovado.");
+    }
+
+    public void enviarEmailCompraNegada(Compra compra){
+        System.out.println("=================================================================");
+        System.out.println("O pagamento da compra " +compra.getId()+ " foi recusado, tente novamente ou utilize outro meio de pagamento.");
+    }
+
 }

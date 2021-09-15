@@ -3,7 +3,6 @@ package br.com.zupacademy.jefferson.mercadolivre.exception.handler;
 import br.com.zupacademy.jefferson.mercadolivre.exception.ExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
